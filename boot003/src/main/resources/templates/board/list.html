@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko"   xmlns:th="http://www.thymeleaf.org" 
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{fragments/layout}">	<!-- ##1 -->
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="container   my-5">
+			<h3>MULTIBOARD</h3>
+			<table
+				class="table table-striped  table-bordered table-hover text-center">
+				<caption>MULTIBOARD-LIST</caption>
+				<thead>
+					<tr>
+						<th scope="col">NO</th>
+						<th scope="col">TITLE</th>
+						<th scope="col">WRITER</th>
+						<th scope="col">DATE</th>
+						<th scope="col">HIT</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- 1 tr:each="	한개, 상태 :	리스트" -->
+					<!-- 2 tr:text="동적으로 꺼내온 데이터" -->
+					<!-- 2 th:href="@{/board/insert}" -->
+					<tr th:each=" dto,state : ${list} " >
+						<td th:text="${state.index}" >1</td>
+						<td><a th:href="@{|/board/detail/${dto.id}|}" th:text="${dto.btitle}" ></a></td>
+						<td th:text="${dto.member.name}" >ADMIN</td>
+						<td th:text="${dto.createDate}" ></td>
+						<td th:text="${dto.bhit}" ></td>
+					</tr>
+
+				</tbody>
+			</table>
+			<p class="text-end">
+				<a th:href="@{/board/insert}" class="btn btn-info">글쓰기</a>
+			</p>
+		</div>
+
+	</div>
+
+</body>
+</html>

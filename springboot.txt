@@ -1,0 +1,266 @@
+컨트롤-쉬프트-f 붙여넣은 수식을 자동으로 정리해줌
+
+
+#1. 반복		<div th:each="dto, state:${list}"> </div>
+#2. 동적문자열 	<h3 th:text="${dto.name}"></h3> , <input th:value="${dto.name}"/>
+#3. 링크		<a th:href="@{/board/list}"></a>
+		<a th:href="@{|/board/detail/${dto.id}|}"></a>
+		<form th:action="@{/board/insert}"><>
+
+
+
+■ STEP 1. project
+	-enc UTF-8
+	-project
+
+	연습) boot002 project 만들기 
+
+
+■ STEP 2. setting(properties)
+>>before
+
+#####################################
+#			boot SETTING			#
+#####################################
+	#WebApplication
+spring.application.name=boot001
+
+	#Banner Settinh
+
+
+	#DataSource Setting
+
+
+	#Jpa
+
+
+	#Logging
+
+
+	#Thymeleaf
+
+
+-dto (lombok)
+
+
+	연습) boot002 project 만들기
+		1) application.properteis 설정
+		      context-path=/boot2
+		     포트번호 8282
+		     application-type= web으로 설정
+		2) @Controller @ResponseBody 설정해서
+		     localhost:8282/boot2/ex1  접속시 -   springboot 출력
+		3) @Controller 설정해서
+		     RequestMapping("/ex2") - model 설정 test, ex2
+		     localhost:8282/boot2/ex2 접속시 - model에서 설정한 - ex2 출력
+
+
+
+■ STEP 3. db
+	- jpa
+	1) application.properties
+	2) @Entity - Dto / 테이블 만들기
+	3) @Repository - Dao
+
+	- ex
+	1) @Entity 이용해서 Member 테이블만들기
+	2) @Repository 이용해서 MemberRepository
+
+
+■ STEP 4. view
+	1. pom.xml 셋팅확인
+<dependency>
+<groupId>org.springframework.boot</groupId>
+<artifactId>spring-boot-starter-thymeleaf</artifactId>
+</dependency>
+<!--  https://mvnrepository.com/artifact/nz.net.ultraq.thymeleaf/thymeleaf-layout-dialect  -->
+<!--  추가  -->
+<dependency>
+<groupId>nz.net.ultraq.thymeleaf</groupId>
+<artifactId>thymeleaf-layout-dialect</artifactId>
+</dependency>
+<!--  추가  -->
+	2. application.properties 설정확인
+	3. layout
+	4. 화면설정
+
+
+■ STEP 5. board
+
+mysql> desc board;
++-------------+--------------+------+-----+---------+----------------+
+| Field       | Type         | Null | Key | Default | Extra          |
++-------------+--------------+------+-----+---------+----------------+
+| id          | bigint       | NO   | PRI | NULL    | auto_increment |
+| bcontent    | text         | YES  |     | NULL    |                |
+| bfile       | varchar(255) | YES  |     | NULL    |                |
+| bhit        | bigint       | YES  |     | NULL    |                |
+| bip         | varchar(255) | YES  |     | NULL    |                |
+| bpass       | varchar(255) | YES  |     | NULL    |                |
+| btitle      | varchar(200) | YES  |     | NULL    |                |
+| create_date | datetime(6)  | YES  |     | NULL    |                |
+| friends_id  | bigint       | YES  | MUL | NULL    |                |
++-------------+--------------+------+-----+---------+----------------+
+9 rows in set (0.00 sec)
+
+mysql>
+mysql> desc member;
++-------------+--------------+------+-----+---------+----------------+
+| Field       | Type         | Null | Key | Default | Extra          |
++-------------+--------------+------+-----+---------+----------------+
+| id          | bigint       | NO   | PRI | NULL    | auto_increment |
+| age         | int          | NO   |     | NULL    |                |
+| create_date | datetime(6)  | YES  |     | NULL    |                |
+| name        | varchar(255) | NO   |     | NULL    |                |
+| team_id     | bigint       | YES  | MUL | NULL    |                |
++-------------+--------------+------+-----+---------+----------------+
+5 rows in set (0.00 sec)
+
+mysql&gt
+
+■ STEP 6. security
+	1. spring security?
+		1)애플리케이션의 보안(인증,인가) 담당
+		2) filter의 흐름에 따라 처리 
+
+	2. 인증 vs 인가
+		1) 인증- 본인이 맞는지 확인 				여권내고 본인이 맞는지 인증 
+		2) 인가- 인증된 사용자가 어디까지 접근가능한지 설정 		비행기는 탔지만 조종석까지 가는건 허락안됨
+ 
+	3. spring security 아키텍쳐 (1)
+		1) 사용자가 로그인폼 로그인시도(username + password 전달)
+		2) UsernamePasswordAuthentication 요청정보 - Authentication 생성
+		3) Authentication 인증처리
+	
+		10) 인증완료 (사용자정보) SecurityContextHolder에 담기
+			-AuthenticationSuccessHandler 성공
+			-AuthenticationFailureHandler  실패
+
+	3. spring security 아키텍쳐 (2)
+		4) Authentication Manager 인증담담
+			-UsernamePasswordAuthentication Token 은 Provider를 찾는데 사용
+		5) AuthenticationProvider - 로그인정보와 db정보를 비교 
+		6) UserDetailService - db에 있는 사용자 정보 가져오기 
+
+
+
+▶▶▶ 실습
+	1. spring project > pom.xml
+		예) board만들었던 프로젝트에 security추가
+	2. localhost:8080/login	로그인창 -> 인증(본인확인)
+ 	3. SecurityConfig.java  	설정
+	4. Member		@Entity
+	5. MemberRepository	crud(Dao)
+	6. MemberService
+	7.Controller
+	8. View
+
+
+
+
+
+
+
+■ STEP 7. service
+	1) 패키지명.board - BoardService
+
+
+■ STEP 8. view
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ko"   xmlns:th="http://www.thymeleaf.org" 
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{fragments/layout}">	<!-- ##1 -->
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div layout:fragment="content">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

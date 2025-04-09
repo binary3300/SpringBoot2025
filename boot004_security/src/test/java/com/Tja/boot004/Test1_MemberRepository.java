@@ -21,7 +21,7 @@ class Test1_MemberRepository {
 	 */
 	
 	
-	@Test void insert() {
+	@Disabled  @Test void insert() {
 		Member member=new Member();
 		member.setUsername("first");
 		member.setPassword("1111");
@@ -29,30 +29,30 @@ class Test1_MemberRepository {
 		memberRepository.save(member);
 	}
 	
-	@Disabled  void findAll() {
+	@Disabled @Test void findAll() {
 		List<Member> list = memberRepository.findAll();
 		System.out.println(list);
 	}
 	
-	@Disabled void findId() { 
+	@Disabled  void findId() { 
 		System.out.println(memberRepository.findById(1L).get());
 	}
 	
-	@Disabled void findUsername() {
+	@Disabled  void findUsername() {
 		System.out.println(memberRepository.findByUsername("first").get());
 	}
 	
-	@Disabled void update() { 
+	@Disabled  void update() { 
 		Member member = memberRepository.findById(1L).get();
 		member.setUsername("one");
 		memberRepository.save(member);
 	}
 	
-	@Disabled void updatePassword() { 
+	@Disabled  void updatePassword() { 
 		memberRepository.updateByIdAndPassword("1234", "1111", 1L);
 	}
 	
-	@Disabled void delete() { 
+	@Test void delete() { 
 		Member member = memberRepository.findById(1L).get();
 		memberRepository.delete(member);
 	}

@@ -1,0 +1,123 @@
+▶▶▶2025.04.08
+
+Q1.  springboot 프로젝트 생성시  package 를  com.thejoa.books로 설정했다. component-scan이 설정된 범위는?
+	-com.thejoa.books
+	>com.thejoa.books 포함한 하위패키지 모두!
+	
+
+Q2.  spring boot를 java 또는 web 버젼으로 사용하는 것이 가능하다. 설정파일의 이름은?
+	-controller
+	>application.properties
+
+
+Q3.  spring을 web버젼으로 사용하려고한다.    spring.main.web-application-type=  설정은?
+	-servlet
+	>spring.main.web-application-type=servlet
+
+
+Q4.  위의 패키지에 @ResponseBody를 이용하여   /test1  에 다음과 같이 출력되도록만드려고한다.
+     	localhost:8181/boot1/test1    브라우저에 hello출력
+     	@Controller 파일을 설정하시오.
+	
+	>com.thejoa.books.controller
+	  @Controller
+	  public class TestController{
+		@GetMapping("/test1")
+		@ResponseBody
+		public String test1(){ return "hello"; }
+	  }
+
+     
+Q5. jpa 설정시  spring.jpa.hibernate.ddl-auto=create   또는  spring.jpa.hibernate.ddl-auto=update 가 있다.  두개의 차이점은?
+	-create는 동일한 이름의 테이블이 있다면 이를 삭제하고 새로 만드는 명령어,
+	-update는 기존테이블의 값을 수정하는 명령어
+	
+	>spring.jpa.hibernate.ddl-auto=create - 기존테이블 삭제하고 다시만들기
+	>spring.jpa.hibernate.ddl-auto=update - 기존테이블의 수정된 부분만 추가
+
+	
+
+Q6. jpa를 이용하여 team 테이블을 만들려고 한다.   entity를 작성하시오.
++----------+-----------------------+-------------------------+--------+----------------+
+	id          		bigint        	기본키   숫자자동증가
+	name        	varchar(255)
+	createDate	datetime
+
+
+
+	>@Entity
+	@Getter
+	@Setter
+	public class Team{
+		@Id
+		@GeneratedValue( strategy=GenerationType.IDENTITY )
+		private Long id;
+		private String name;
+		private LocalDateTime sreateDate=LocalDateTime.noe();
+
+
+Q7.   team의 crud를 사용할수 있게  repository를 작성하시오.
+	>public interface TeamRepository extends JpaRepository<Team, Long>{ }
+	  insert into team ( name, create_date )values(?,?);
+	  select * from team
+	  select * from team where id=?
+	  update team set nam=? where id=?
+	  delete from team where id=?
+
+
+Q8.   class Team 엔티티와  class Member 엔티티에 외래키를 설정하려고한다.
+  팀은 많은 멤버를 가진다.  를 이용하여   team -|------∈ member
+  Team 클래스에서 설정할부분은?
+	-TeamOneMember	
+	>@OneToMany
+  
+  Member 클래스에서 설정할 부분은?
+	-MemberOneTeam
+	@ManyToOne
+
+  
+Q9. springboot에서 jsp 대신에 사용하는 템플릿은? (    )
+	-java
+	>html → thymeleaf
+
+
+
+
+
+▶▶▶2025.04.09
+
+#1. 반복		<div th:each="dto, state:${list}"> </div>
+#2. 동적문자열 	<h3 th:text="${dto.name}"></h3> , <input th:value="${dto.name}"/>
+#3. 링크		<a th:href="@{/board/list}"></a>
+		<a th:href="@{|/board/detail/${dto.id}|}"></a>
+		<form th:action="@{/board/insert}"><>
+
+Q1.  springboot  thymeleaf를 이용하여  서버로부터 list를 넘겨받아 게시판의 반복문을 작성하려고 한다.  
+
+<tr          th:each="dto, state:${list}"          >
+	<td><a         th:text="$dto.btitle"           <!-- 1-1. 제목 btitle -->
+		   th:href="@{|/board/datail/${dto.id}|}"  ></a></td>  
+	<!-- 1-3.  /board/detail 경로의 해당 id로 이동  -->
+	<td  th:text="${dto.member.name}"></td>  <!-- 1-3. 작성자 member객체안의 name   -->
+</tr> 
+	
+
+
+
+Q2.  thymeleaf 에서 a태그에  /board/list경로로 링크를 걸려고 한다.  
+<a  th:text="@{/board/list}"   class="btn btn-outline-primary btn-block">목록보기</a>
+
+
+
+
+Q3.  form 태그에서  /board/delete로  action을 설정하려고 한다. 들어갈 코드는?
+<form    th:action="@{/board/delete}"     method="post" id="writeForm" onsubmit="return  form()">
+	<div class="my-3">
+		<label for="bpass" class="form-label">비밀번호</label> <input type="text" name="bpass" id="bpass" class="form-control">
+	</div>
+	<div class="my-3  text-end">
+		<input type="submit" value="입력" class="btn btn-primary btn-block">
+	</div>
+</form>
+
+

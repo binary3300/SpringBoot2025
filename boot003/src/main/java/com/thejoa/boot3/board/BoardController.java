@@ -1,11 +1,12 @@
 package com.thejoa.boot3.board;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import lombok.RequiredArgsConstructor;
 
@@ -39,9 +40,12 @@ public class BoardController {
 		System.out.println("....." + board);
 		System.out.println("....." + member_id);
 		service.insert(board,member_id);
-		//글쓰기 기능
 		return "redirect:/board/list"; 
+		//글쓰기 기능
 	} //http://localhost:8080/board/insert (글쓰기 기능 -> 갱신된 리스트)
+	//@RequestParam- form, query string, 데이터 헤더로부터 데이터 추출
+	//@PathVariable- url경로의 변수를 추출할때 사용
+	
 	
 	
 //UPDATE//업데이트/////////////////////////////////
@@ -54,22 +58,27 @@ public class BoardController {
 	} //http://localhost:8080/board/update/1 (글수정 폼)
 	
 	@PostMapping("/board/update")
-	public String update_post( Board board ){
-		service.update(board);
-		//글수정 기능
-		return "redirect:/board/list"; 
+	public String update_post( Board board , RedirectAttributes rttr){
+		String msg = "fail";
+		if( service.update(board) > 0 ) {msg="글 수정 완료!";} 
+		rttr.addFlashAttribute("msg",msg);
+		return "redirect:/board/detail/" + board.getId(); 
 	} //폼태그에서 테스트 (글수정 기능 -> 갱신된 리스트)
 	
 	
 	
 //DELETE//지우기////////////////////////////////////
-	@GetMapping("/board/delete")
-	public String delete_get(){
+	@GetMapping("/board/delete/{id}")
+	public String delete_get(@PathVariable Long id, Model model){
+		model.addAttribute("id", id);
 		return "board/delete";
 	} //http://localhost:8080/board/delete (글삭제 폼)
 	
 	@PostMapping("/board/delete")
-	public String delete_post( Board board ){
+	public String delete_post( Board board , RedirectAttributes rttr ){
+		String msg = "fail";
+		if(service.delete(board) > 0) {msg="글 삭제 성공!";}
+		rttr.addFlashAttribute("msg",msg);
 		service.delete(board);
 		//글삭제 기능
 		return "redirect:/board/list"; 

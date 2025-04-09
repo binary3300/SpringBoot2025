@@ -8,7 +8,32 @@
 </head>
 <body>
 	<div layout:fragment="content">
-		<h3>delete</h3>
+		<div class="container card  my-5   p-3">
+			<h3>MULTIBOARD - 글삭제</h3>
+			<form th:action="@{/board/delete}" method="post" id="writeForm"
+				onsubmit="return  form()">
+
+				<div class="my-3">
+					<label for="bpass" class="form-label">비밀번호</label>
+					<input type="text" name="bpass" id="bpass" class="form-control">
+					<input type="hidden" name="id" th:value="${id}" class="form-control">
+				</div>
+				<div class="my-3  text-end">
+					<input type="submit" value="입력" class="btn btn-info btn-block text-white">
+					<input type="reset" value="취소"
+						class="btn btn-outline-info btn-block"> <a
+						th:href="@{/board/list}" class="btn btn-outline-info btn-block">목록보기</a>
+				</div>
+			</form>
+			<!-- end form -->
+			<script>
+   function form(){  
+      let bpass = document.getElementById("bpass");
+   
+      if(bpass.value ==""){alert("빈칸입니다");   bname.focus();  return false; }
+   }
+   </script>
+		</div>
 	</div>
 
 </body>

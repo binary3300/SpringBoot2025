@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko"   xmlns:th="http://www.thymeleaf.org" 
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{fragments/layout}"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">	<!-- ##1 -->
+<head>
+<meta charset="UTF-8">
+<title>Board Project</title>
+</head>
+<body>
+	<div layout:fragment="content">
+<!-- 		<script >  헤더로 이사갔습니다
+			let msg = "[[${msg}]]"; // [[...]] Thymeleaf 데이터 바인딩	- 서버에서 js로 코드전달시 
+			console.log(msg);
+			if(msg=='fail'){ history.go(-1); alert('정보를 확인해주세요'); }
+			else if(msg.length !=0){alert(msg);}
+		
+		</script> -->
+	
+		<div class="container   my-5">
+			<h3>MULTIBOARD</h3>
+			<table
+				class="table table-bordered table-hover text-center">
+				<caption>MULTIBOARD-LIST</caption>
+				<thead>
+					<tr>
+						<th scope="col">NO</th>
+						<th scope="col">TITLE</th>
+						<th scope="col">WRITER</th>
+						<th scope="col">DATE</th>
+						<th scope="col">HIT</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- 1 tr:each="	한개, 상태 :	리스트" -->
+					<!-- 2 tr:text="동적으로 꺼내온 데이터" -->
+					<!-- 2 th:href="@{/board/insert}" -->
+					<tr th:each=" dto,state : ${list} " >
+						<td th:text="${list.size()-state.index}" ></td>
+						<td><a th:href="@{|/board/detail/${dto.id}|}" th:text="${dto.btitle}" ></a></td>
+						<td th:text="${dto.member.username}" ></td>
+						<td th:text="${ #temporals.format(dto.createDate, 'yyyy-MM-dd HH:mm')  }" ></td>
+						<td th:text="${dto.bhit}" ></td>
+					</tr>
+
+				</tbody>
+			</table>
+			<p class="text-end">
+				<a th:href="@{/board/insert}" class="btn btn-info text-white">글쓰기</a>
+			</p>
+		</div>
+
+	</div>
+
+</body>
+</html>
